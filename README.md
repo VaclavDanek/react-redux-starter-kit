@@ -11,7 +11,7 @@ React starter-kit project
 * react-router-dom
 * axios
 * jest
-* i18n-react
+* i18next
 * font-awesome
 * bootstrap
 * scss support
