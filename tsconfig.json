@@ -7,7 +7,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "allowJs": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -15,7 +15,7 @@
     "useUnknownInCatchVariables": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "typeRoots": ["src/types", "node_modules/@types"],
+    "typeRoots": ["src/types/**", "node_modules/@types"],
     "baseUrl": "./"
   },
   "include": ["src/**/*"]

@@ -72,9 +72,6 @@
       "no": "Ne",
       "reloadNewVersion": "Načíst novou verzi",
       "warning": "Upozornění"
-    },
-    "options": {
-      "fullScreen": "Chcete zobrazit aplikaci přes celou obrazovku?"
     }
   }
 }

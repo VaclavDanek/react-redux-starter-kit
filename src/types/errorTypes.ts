@@ -6,18 +6,15 @@ export enum ErrorTypesEnum {
   WARNING = 1,
   CRITICAL = 2,
 }
-
 export interface CustomErrorEvent {
   message: string;
   stack: any;
 }
-
 export interface CustomError {
   error: ErrorEvent | CustomErrorEvent;
-  type: number;
+  type: ErrorTypesEnum;
   time: Date;
 }
-
 export interface AxiosError extends AxiosErrorType {
   stack: string;
 }

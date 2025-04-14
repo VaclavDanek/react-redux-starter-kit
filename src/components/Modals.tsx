@@ -1,17 +1,17 @@
-import I18n from 'i18n-react'
+import i18n from 'i18next'
 import { Component } from 'react'
 import { Alert, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfo } from '@fortawesome/free-solid-svg-icons'
 
 // components
-import { AuthExpireAlert, UpdateAlert, FullScreenMode } from './Modal'
+import { AuthExpireAlert, UpdateAlert } from './Modal'
 
 // types
 import type { ImmutableArray } from 'seamless-immutable'
 import type { ObjectType, Alert as AlertType } from '../types'
 
-export type ModalKey = 'authExpireAlert' | 'updateAlert' | 'fullScreenMode'
+export type ModalKey = 'authExpireAlert' | 'updateAlert'
 
 interface ModalsProps {
   alerts?: ImmutableArray<AlertType>;
@@ -33,11 +33,6 @@ export default class Modals extends Component<Readonly<ModalsProps>> {
   render(): JSX.Element {
     const { alerts = [], modals = {}, modalProps = {} } = this.props
     return <>
-      <FullScreenMode
-        show={!!modals.fullScreenMode}
-        onClose={() => { this.handleToggleModal('fullScreenMode') }}
-        {...modalProps.fullScreenMode}
-      />
       <UpdateAlert
         show={!!modals.updateAlert}
         onClose={() => { window.location.reload() }}
@@ -52,7 +47,7 @@ export default class Modals extends Component<Readonly<ModalsProps>> {
         {alerts.map((alert: AlertType, index: number) => (
           <Modal key={`modal-alert-${alert.message}`} isOpen toggle={() => { this.handleOnCloseAlert(index) }}>
             <ModalHeader>
-              <FontAwesomeIcon icon={faInfo} /> {I18n.translate('general.labels.warning')}
+              <FontAwesomeIcon icon={faInfo} /> {i18n.t('general.labels.warning')}
             </ModalHeader>
             <ModalBody>
               <Alert className='mb-0' color={alert.type}>{alert.message}</Alert>
@@ -62,7 +57,7 @@ export default class Modals extends Component<Readonly<ModalsProps>> {
                 className='btn btn-primary btn-lg'
                 onClick={() => { this.handleOnCloseAlert(index) }}
                 type='button'
-              >{I18n.translate('general.labels.close')}</button>
+              >{i18n.t('general.labels.close')}</button>
             </ModalFooter>
           </Modal>
         ))}

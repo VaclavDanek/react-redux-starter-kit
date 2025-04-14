@@ -12,7 +12,7 @@ const PORT = process.env.PORT || '3000'
 module.exports = {
   mode: 'development',
   target: 'web',
-  entry: ['./src/index.jsx'], // your app's entry point
+  entry: ['./src/main.jsx'], // your app's entry point
   devtool: process.env.WEBPACK_DEVTOOL || 'eval-source-map',
   output: {
     filename: 'bundle.js',

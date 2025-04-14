@@ -32,15 +32,16 @@ const baseRestrictedImports = {
 }
 
 module.exports = {
+    root: true,
     plugins: ["@typescript-eslint", "react", "react-hooks", "jsx-a11y", "jest", "testing-library", "import"],
     env: {
         amd: true,
         es2022: true,
         browser: true,
+        node: true,
     },
     reportUnusedDisableDirectives: true,
     parserOptions: {
-        parser: "@babel/eslint-parser",
         ecmaVersion: "latest",
         ecmaFeatures: {
             jsx: true,
@@ -249,7 +250,11 @@ module.exports = {
         },
         {
             // JSX A11y - This plugin is being extended because there's an extensive amount of custom options automatically configured. - https://github.com/jsx-eslint/eslint-plugin-jsx-a11y
-            extends: ["plugin:jsx-a11y/recommended"],
+            extends: [
+                "plugin:jsx-a11y/recommended",
+                "plugin:react/recommended",
+                "eslint:recommended",
+            ],
             files: ["*.jsx", "*.tsx"],
             rules: {
                 // React - https://github.com/jsx-eslint/eslint-plugin-react#list-of-supported-rules
@@ -426,11 +431,12 @@ module.exports = {
         "no-class-assign": "error",
         "no-compare-neg-zero": "error",
         "no-cond-assign": "error",
+        "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
         "no-const-assign": "error",
         "no-constant-condition": "error",
         "no-constructor-return": "error",
         "no-control-regex": "error",
-        "no-debugger": "warn",
+        "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
         "no-dupe-args": "error",
         "no-dupe-class-members": "error",
         "no-dupe-else-if": "error",

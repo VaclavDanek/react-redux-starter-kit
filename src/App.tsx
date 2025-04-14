@@ -1,57 +1,55 @@
-import I18n from 'i18n-react'
 import { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import * as config from '../config'
+import { withTranslation } from 'react-i18next'
+import * as config from './config'
 
 // pages
-import { HomePage } from '../pages'
+import { HomePage } from './pages'
 
 // components
-import { Loader, Modals } from '../components'
+import { Loader, Modals } from './components'
 
 // redux
-import { generalActions } from '../redux/generalRedux'
+import { generalActions } from './redux/generalRedux'
 
 // types
-import type { State } from '../store/reducers'
-import type { CustomErrorEvent } from '../types/errorTypes'
-import type { ModalKey } from '../components/Modals'
+import type { ElementType } from 'react'
+import type { WithTranslation } from 'react-i18next'
+import type { State } from './store/reducers'
+import type { CustomErrorEvent } from './types/errorTypes'
+import type { ModalKey } from './components/Modals'
 
 // styles
 import 'bootstrap/scss/bootstrap.scss'
-import '../styles/main.scss'
-import '../styles/mobile.scss'
+import './styles/main.scss'
 
-type RootContainerProps = Readonly<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps>
+type AppContainerProps = Readonly<WithTranslation & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps>
 
-interface RootContainerState {
+interface AppContainerState {
   hasError?: boolean;
 }
 
-class RootContainer extends Component<RootContainerProps, RootContainerState> {
-  state: RootContainerState = {}
+class AppContainer extends Component<AppContainerProps, AppContainerState> {
+  state: AppContainerState = {}
 
-  constructor(props: RootContainerProps) {
+  constructor(props: AppContainerProps) {
     super(props)
     window.addEventListener('error', this.handleOnError)
   }
 
   static getDerivedStateFromProps(
-    nextProps: RootContainerProps, 
-    prevState: RootContainerState, // eslint-disable-line @typescript-eslint/no-unused-vars
-  ): Partial<RootContainerState> | null {
-    const { redirectUrl, setRedirectUrl } = nextProps
-    if (redirectUrl) { // reset after every redirect
-      setRedirectUrl('')
-    }
+    nextProps: AppContainerProps, 
+    prevState: AppContainerState, // eslint-disable-line @typescript-eslint/no-unused-vars
+  ): Partial<AppContainerState> | null {
     return null
   }
 
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static getDerivedStateFromError(error: Error): Partial<RootContainerState> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static getDerivedStateFromError(error: Error): Partial<AppContainerState> {
     return { hasError: true }
   }
 
@@ -70,26 +68,18 @@ class RootContainer extends Component<RootContainerProps, RootContainerState> {
   }
 
   handleOnError = (errorEvent?: ErrorEvent | CustomErrorEvent): void => {
-    const { addAlert, onActionFailure, onStopFetching } = this.props
+    const { addAlert, onActionFailure, onStopFetching, t } = this.props
     
     onStopFetching() // just for sure...
     if (errorEvent && !config.ignoredErrorEventMessages.includes(errorEvent.message)) {
       onActionFailure(errorEvent)
       if (process.env.NODE_ENV === 'production' && config.showErrorAlert) {
-        addAlert({ message: I18n.translate('alerts.onGlobalError') as string, type: 'warning' })
+        addAlert({ message: t('alerts.onGlobalError') as string, type: 'warning' })
       }
     }
   }
 
-  handleOnRedirect = (path: string): void => {
-    this.props.setRedirectUrl(path)
-  }
-
-  handleOnReload = (): void => {
-    window.location.reload()
-  }
-
-  handleOnCloseAlert = (index: number): void => {
+  handleCloseAlert = (index: number): void => {
     this.props.removeAlert(index)
   }
 
@@ -98,11 +88,11 @@ class RootContainer extends Component<RootContainerProps, RootContainerState> {
   }
 
   render(): JSX.Element {
-    const { handleOnCloseAlert, handleToggleModal } = this
-    const { alerts, fetching, modals, redirectUrl } = this.props
+    const { handleCloseAlert, handleToggleModal } = this
+    const { alerts, fetching, modals } = this.props
 
     return <>
-      <BrowserRouter basename={config.basename}>
+      <BrowserRouter basename={process.env.NODE_ENV === 'production' ? config.basename : undefined}>
         <Routes>
           <Route
             path='/'
@@ -117,12 +107,11 @@ class RootContainer extends Component<RootContainerProps, RootContainerState> {
             } 
           />
         </Routes>
-        {redirectUrl && <Navigate to={redirectUrl} />}
       </BrowserRouter>
       <Modals
         alerts={alerts}
         modals={modals}
-        onCloseAlert={handleOnCloseAlert}
+        onCloseAlert={handleCloseAlert}
         onToggleModal={handleToggleModal}
       />
       <Loader active={fetching > 0} />
@@ -140,8 +129,10 @@ const mapDispatchToProps = {
   onActionFailure: generalActions.onActionFailure,
   onStopFetching: generalActions.onStopFetching,
   removeAlert: generalActions.removeAlert,
-  setRedirectUrl: generalActions.setRedirectUrl,
   toggleModal: generalActions.toggleModal,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)
+export default compose<ElementType>(
+  withTranslation(),
+  connect(mapStateToProps, mapDispatchToProps),
+)(AppContainer)

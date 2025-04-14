@@ -1,9 +1,13 @@
 import axios from 'axios'
 
+// utils
+import { requestInterceptor, responseInterceptor } from '../utils'
+
 // types
 import type { AxiosBasicCredentials, AxiosInstance, AxiosResponse } from 'axios'
+import type { LoginRequestResponse } from '../epics/authEpic'
 
-const apis: Record<string, AxiosInstance> = {
+const apis = {
   myApi: axios.create({
     baseURL: '',
     timeout: 5000,
@@ -11,7 +15,10 @@ const apis: Record<string, AxiosInstance> = {
       'Content-Type': 'application/json',
     }
   }),
-}
+} satisfies Record<string, AxiosInstance>;
+
+Object.values(apis).forEach((api: AxiosInstance) => api.interceptors.request.use(...requestInterceptor))
+Object.values(apis).forEach((api: AxiosInstance) => api.interceptors.response.use(...responseInterceptor))
 
 export const setHeader = (apiKey: string, header: string, value?: string | string[]): void => {
   if (value) { apis[apiKey].defaults.headers.common[header] = value } else { delete apis[apiKey].defaults.headers.common[header] }
@@ -29,10 +36,10 @@ export const setGlobalBasicAuth = (credentials?: AxiosBasicCredentials): void =>
   if (credentials) { axios.defaults.auth = credentials } else { delete axios.defaults.auth }
 }
 
-const endpoints: Record<string, (...args: any[]) => Promise<AxiosResponse>> = {
+const endpoints = {
   // post
-  login: (username: string, password: string): Promise<AxiosResponse> => (
-    apis.myApi.post(`login`, { username, password }, { timeout: 15000 })
+  login: (username: string, password: string): Promise<AxiosResponse<LoginRequestResponse>> => (
+    apis.myApi.post(`login`, { username, password })
   ),
 
   // put
@@ -40,6 +47,6 @@ const endpoints: Record<string, (...args: any[]) => Promise<AxiosResponse>> = {
   // get
 
   // delete
-}
+} satisfies Record<string, (...args: any[]) => Promise<AxiosResponse>>
 
 export default endpoints

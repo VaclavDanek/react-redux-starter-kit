@@ -8,7 +8,7 @@ React starter-kit project
 * eslint
 * react-redux with seamless-immutable state
 * reduxsauce
-* react-router
+* react-router-dom
 * axios
 * jest
 * i18n-react
@@ -23,5 +23,8 @@ React starter-kit project
 3. visit [http://localhost:3000](http://localhost:3000/)
 
 ## Build
-1. npm build or yarn build
+1. npm run build or yarn build
 2. go to "dist" folder, located in the root directory
+
+## Test (jest)
+npm test or yarn test

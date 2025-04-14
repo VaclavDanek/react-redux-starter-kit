@@ -21,7 +21,6 @@ export const INITIAL_STATE = Immutable({
   alerts: Immutable([] as Alert[]),
   errors: Immutable([] as (CustomError | AxiosError)[]),
   fetching: 0,
-  redirectUrl: '',
 })
 
 /* ------------- Types and Action Creators ------------- */
@@ -44,7 +43,6 @@ const actionCreators = {
   setAlertFromRequestFailure: (message: string) => ({ type: 'SET_ALERT_FROM_REQUEST_FAILURE', payload: { message } }),
   setErrors: (errors: CustomError[]) => ({ type: 'SET_ERRORS', payload: { errors } }),
   setFetching: (fetching: number) => ({ type: 'SET_FETCHING', payload: { fetching } }),
-  setRedirectUrl: (redirectUrl: string) => ({ type: 'SET_REDIRECT_URL', payload: { redirectUrl } }),
   toggleModal: (key: ModalKey, show?: boolean) => ({ type: 'TOGGLE_MODAL', payload: { key, show } }),
 } satisfies Record<string, ActionCreator<AnyAction>>
 
@@ -90,9 +88,6 @@ const handlers = {
   },
   ON_STOP_FETCHING: (state: GeneralState): GeneralState => {
     return state.fetching > 0 ? state.set('fetching', state.fetching - 1) : state
-  },
-  SET_REDIRECT_URL: (state: GeneralState, { payload }: GeneralAction<'setRedirectUrl'>): GeneralState => {
-    return state.set('redirectUrl', payload.redirectUrl)
   },
   TOGGLE_MODAL: (state: GeneralState, { payload }: GeneralAction<'toggleModal'>): GeneralState => {
     return state.setIn(['modals', payload.key], payload.show ?? !state.modals[payload.key])

@@ -72,9 +72,6 @@
       "no": "No",
       "reloadNewVersion": "Load new version",
       "warning": "Warning"
-    },
-    "options": {
-      "fullScreen": "Do you want to view the application in full screen mode?"
     }
   }
 }

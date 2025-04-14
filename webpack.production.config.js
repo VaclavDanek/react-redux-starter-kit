@@ -4,7 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin  = require('mini-css-extract-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserWebpackPlugin = require('terser-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyPlugin = require('copy-webpack-plugin')
 const loaders = require('./webpack.loaders')
@@ -13,7 +13,7 @@ const WEBPACK_REPORT = true
 
 module.exports = {
   mode: 'production',
-  entry: ['./src/index.jsx'],
+  entry: ['./src/main.jsx'],
   devtool: process.env.WEBPACK_DEVTOOL || 'source-map',
   output: {
     clean: true,
@@ -57,9 +57,10 @@ module.exports = {
     ],
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {
+      new TerserWebpackPlugin({
+        terserOptions: {
           compress: {
             drop_console: true,
             drop_debugger: true,
