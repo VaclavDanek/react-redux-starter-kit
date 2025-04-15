@@ -30,7 +30,7 @@ export const responseInterceptor = [
       case 403:
         errorType = ErrorTypesEnum.CRITICAL;
         break
-      case 404:
+      case 401:
         errorType = ErrorTypesEnum.INFO; // probably just wrong authentication credentials
         if (store.getState().auth.authorization) { // probably expired session
           store.dispatch(authActions.logout())
