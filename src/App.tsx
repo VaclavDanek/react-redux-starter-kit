@@ -88,7 +88,7 @@ class AppContainer extends Component<AppContainerProps, AppContainerState> {
   }
 
   render(): JSX.Element {
-    const { handleCloseAlert, handleToggleModal } = this
+    const { handleCloseAlert } = this
     const { alerts, fetching } = this.props
 
     return <>

@@ -9,7 +9,7 @@ import type { Alert as AlertType } from '../types'
 import type { FC } from 'react'
 
 interface AlertsProps {
-  alerts?: ImmutableArray<AlertType>;
+  alerts: ImmutableArray<AlertType>;
   onCloseAlert?: (index: number) => void;
 }
 
@@ -18,9 +18,8 @@ const Alerts: FC<AlertsProps> = (props: Readonly<AlertsProps>): JSX.Element => {
     props.onCloseAlert?.(index)
   }
 
-  const { alerts = [] } = props
   return <>
-    {alerts.map((alert: AlertType, index: number) => (
+    {props.alerts.map((alert: AlertType, index: number) => (
       <Modal key={`modal-alert-${alert.message}`} isOpen toggle={() => { handleOnCloseAlert(index) }}>
         <ModalHeader>
           <FontAwesomeIcon icon={faInfo} /> {i18n.t('general.labels.warning')}
