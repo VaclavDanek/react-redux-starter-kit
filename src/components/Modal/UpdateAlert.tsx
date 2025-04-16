@@ -3,13 +3,14 @@ import { Alert, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 
-interface UpdateAlertProps {
+// types
+import type { ModalType } from '../../types'
+import type { FC } from 'react'
+interface UpdateAlertProps extends ModalType {
   className?: string;
-  show: boolean;
-  onClose: () => void;
 }
 
-const UpdateAlert = (props: Readonly<UpdateAlertProps>): JSX.Element => {
+const UpdateAlert: FC<UpdateAlertProps> = (props: Readonly<UpdateAlertProps>): JSX.Element => {
   const handleOnClose = (): void => {
     props.onClose()
   }

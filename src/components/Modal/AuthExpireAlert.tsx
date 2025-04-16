@@ -3,13 +3,14 @@ import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'react
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 
-interface AuthExpireAlertProps {
+// types
+import type { ModalType } from '../../types'
+import type { FC } from 'react'
+interface AuthExpireAlertProps extends ModalType {
   className?: string;
-  show: boolean;
-  onClose: () => void;
 }
 
-const AuthExpireAlert = (props: Readonly<AuthExpireAlertProps>): JSX.Element => {
+const AuthExpireAlert: FC<AuthExpireAlertProps> = (props: Readonly<AuthExpireAlertProps>): JSX.Element => {
   const handleOnClose = (): void => {
     props.onClose()
   }

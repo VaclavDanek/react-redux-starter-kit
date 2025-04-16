@@ -8,9 +8,8 @@ import { ErrorTypesEnum } from '../types/errorTypes'
 // types
 import type { ActionCreator, AnyAction } from 'redux'
 import type { CreatedActions, Handlers } from 'reduxsauce'
-import type { Alert } from '../types'
+import type { ModalKey, Alert } from '../types'
 import type { CustomError, CustomErrorEvent, AxiosError } from '../types/errorTypes'
-import type { ModalKey } from '../components/Modals'
 
 /* ------------- Initial State ------------- */
 

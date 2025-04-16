@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { withTranslation } from 'react-i18next'
@@ -11,7 +11,7 @@ import * as config from './config'
 import { HomePage } from './pages'
 
 // components
-import { Loader, Modals } from './components'
+import { Loader, Alerts } from './components'
 
 // redux
 import { generalActions } from './redux/generalRedux'
@@ -21,7 +21,7 @@ import type { ElementType } from 'react'
 import type { WithTranslation } from 'react-i18next'
 import type { State } from './store/reducers'
 import type { CustomErrorEvent } from './types/errorTypes'
-import type { ModalKey } from './components/Modals'
+import type { ModalKey } from './types'
 
 // styles
 import 'bootstrap/scss/bootstrap.scss'
@@ -89,7 +89,7 @@ class AppContainer extends Component<AppContainerProps, AppContainerState> {
 
   render(): JSX.Element {
     const { handleCloseAlert, handleToggleModal } = this
-    const { alerts, fetching, modals } = this.props
+    const { alerts, fetching } = this.props
 
     return <>
       <BrowserRouter basename={process.env.NODE_ENV === 'production' ? config.basename : undefined}>
@@ -108,11 +108,9 @@ class AppContainer extends Component<AppContainerProps, AppContainerState> {
           />
         </Routes>
       </BrowserRouter>
-      <Modals
+      <Alerts
         alerts={alerts}
-        modals={modals}
         onCloseAlert={handleCloseAlert}
-        onToggleModal={handleToggleModal}
       />
       <Loader active={fetching > 0} />
     </>
